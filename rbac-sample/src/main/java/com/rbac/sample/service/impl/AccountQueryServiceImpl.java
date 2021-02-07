@@ -3,6 +3,8 @@ package com.rbac.sample.service.impl;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Multimaps;
+import com.rbac.sample.common.CommonCodeEnum;
+import com.rbac.sample.common.CommonException;
 import com.rbac.sample.dao.*;
 import com.rbac.sample.model.Account;
 import com.rbac.sample.model.AccountRoleRelation;
@@ -11,7 +13,11 @@ import com.rbac.sample.service.AccountQueryService;
 import com.rbac.sample.service.convert.AccountMapper;
 import com.rbac.sample.service.convert.PermissionMapper;
 import com.rbac.sample.service.convert.RoleMapper;
-import com.rbac.sample.service.model.*;
+import com.rbac.sample.service.model.AccountDTO;
+import com.rbac.sample.service.model.PermissionDTO;
+import com.rbac.sample.service.model.RoleDTO;
+import com.rbac.sample.service.request.PageQueryAccountRequest;
+import com.rbac.sample.service.response.PageQueryAccountResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,8 +52,20 @@ public class AccountQueryServiceImpl implements AccountQueryService {
     private PermissionRepository permissionRepository;
 
     @Override
-    public AccountDTO queryAccountById(BaseRequest request) {
-        return null;
+    public AccountDTO queryAccountById(String accountId) {
+        AccountDTO accountDTO = Optional.ofNullable(accountRepository.findByAccountId(accountId))
+                .map(AccountMapper.INSTANCE::convert2AccountDTO)
+                .orElseThrow(()-> CommonException.of(CommonCodeEnum.SYSTEM_ERROR));
+        List<String> roldIdList = Optional.ofNullable(accountRoleRepository.findByAccountId(accountId))
+                .orElseGet(ArrayList::new).stream()
+                .map(AccountRoleRelation::getRoleId)
+                .collect(Collectors.toList());
+        List<RoleDTO> roleDTOList = Optional.ofNullable(roleRepository.findByRoleIdIn(roldIdList))
+                .orElseGet(ArrayList::new).stream()
+                .map(RoleMapper.INSTANCE::convert2RoleDTO)
+                .collect(Collectors.toList());
+        accountDTO.setRoleList(roleDTOList);
+        return accountDTO;
     }
 
     @Override

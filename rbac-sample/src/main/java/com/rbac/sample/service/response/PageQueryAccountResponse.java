@@ -1,5 +1,7 @@
-package com.rbac.sample.service.model;
+package com.rbac.sample.service.response;
 
+import com.rbac.sample.service.model.AccountDTO;
+import com.rbac.sample.service.model.PageModel;
 import lombok.Data;
 
 import java.util.List;

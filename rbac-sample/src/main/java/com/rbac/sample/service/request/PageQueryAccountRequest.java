@@ -1,5 +1,6 @@
-package com.rbac.sample.service.model;
+package com.rbac.sample.service.request;
 
+import com.rbac.sample.service.model.PageModel;
 import lombok.Data;
 
 /**

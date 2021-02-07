@@ -1,9 +1,8 @@
 package com.rbac.sample.service;
 
-import com.rbac.sample.service.model.PageQueryAccountRequest;
 import com.rbac.sample.service.model.AccountDTO;
-import com.rbac.sample.service.model.BaseRequest;
-import com.rbac.sample.service.model.PageQueryAccountResponse;
+import com.rbac.sample.service.request.PageQueryAccountRequest;
+import com.rbac.sample.service.response.PageQueryAccountResponse;
 
 
 /**
@@ -12,7 +11,7 @@ import com.rbac.sample.service.model.PageQueryAccountResponse;
  */
 public interface AccountQueryService {
 
-    AccountDTO queryAccountById(BaseRequest request);
+    AccountDTO queryAccountById(String accountId);
 
     PageQueryAccountResponse pageQueryAccount(PageQueryAccountRequest request);
 

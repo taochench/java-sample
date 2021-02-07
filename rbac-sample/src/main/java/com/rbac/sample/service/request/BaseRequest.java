@@ -1,4 +1,4 @@
-package com.rbac.sample.service.model;
+package com.rbac.sample.service.request;
 
 import lombok.Data;
 
